@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WisdomQ Technologies | Global Communication & Talent Excellence</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --primary-glow: rgba(255, 77, 109, 0.4);
+            --primary-dark: #8d021f;
+            --bg-dark: #0a0c10;
+            --surface-glass: rgba(18, 22, 31, 0.7);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --surface-hover: rgba(255, 255, 255, 0.15);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient Backdrop & Video */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.6) saturate(1.1);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(10, 12, 16, 0.6) 0%, rgba(10, 12, 16, 0.95) 100%);
+            z-index: -1;
+        }
+
+        /* Responsive Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 6%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 12, 16, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--surface-border);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 12, 16, 0.92);
+            padding: 0.85rem 6%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            border-bottom-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            z-index: 1002;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+            filter: drop-shadow(0 2px 8px var(--primary-glow));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: #ffffff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Hamburger Button */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 8px;
+            line-height: 1;
+        }
+
+        /* Layout Containers */
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 4vw, 2rem);
+        }
+
+        .section {
+            padding: clamp(4.5rem, 8vw, 7.5rem) 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 760px;
+            margin: 0 auto clamp(2.5rem, 5vw, 4rem) auto;
+        }
+
+        .section-tag {
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            line-height: 1.25;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: clamp(7rem, 12vw, 9rem) 1.5rem clamp(3rem, 6vw, 5rem);
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.1rem, 5.2vw, 4rem);
+            font-weight: 800;
+            line-height: 1.18;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.9rem 2.2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px var(--primary-glow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 77, 109, 0.6);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* About Card */
+        .about-card {
+            background: var(--surface-glass);
+            border: 1px solid var(--surface-border);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: clamp(1.5rem, 4vw, 3rem);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .feature-item i {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: 1.75rem;
+        }
+
+        .card {
+            background: var(--surface-glass);
+            border: 1px solid var(--surface-border);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: clamp(1.75rem, 3.5vw, 2.5rem);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, var(--primary-glow), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--surface-hover);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+        }
+
+        .card:hover::before {
+            opacity: 0.15;
+        }
+
+        .card .icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(255, 77, 109, 0.1);
+            border: 1px solid rgba(255, 77, 109, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .card ul {
+            list-style: none;
+            margin-top: 0.5rem;
+        }
+
+        .card ul li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Contacts Grid */
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .contact-card {
+            background: var(--surface-glass);
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            min-width: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .contact-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .contact-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .contact-info h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+            white-space: nowrap;
+        }
+
+        .contact-info a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            display: inline-block;
+            transition: color 0.2s ease;
+        }
+
+        .contact-info a:hover {
+            color: var(--primary);
+        }
+
+        .phone-container {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .phone-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--surface-border);
+            border-radius: 9999px;
+            color: var(--text-muted);
+            text-decoration: none;
+            white-space: nowrap;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .phone-chip:hover {
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--surface-border);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            background: #08090d;
+        }
+
+        /* Breakpoints & Responsive Enhancements */
+        @media (max-width: 900px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                max-width: 320px;
+                height: 100vh;
+                height: 100dvh;
+                background: rgba(10, 12, 16, 0.96);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                padding: 2rem;
+                border-left: 1px solid var(--surface-border);
+                transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1001;
+            }
+
+            .nav-links.active {
+                right: 0;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+            }
+
+            .nav-links a {
+                font-size: 1.15rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .phone-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .phone-chip {
+                justify-content: center;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+
+            .contact-card {
+                padding: 1rem 1.25rem;
+            }
+            
+            .contact-info a {
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <video class="video-bg" id="bgVideo" muted loop playsinline preload="none" poster="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1920&auto=format&fit=crop">
+        <source data-src="https://cdn.coverr.co/videos/coverr-business-team-working-together-5176/1080p.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <img src="owllogo.jpg" alt="WisdomQ Technologies Logo" onerror="this.style.display='none'">
+            <span>WisdomQ Technologies</span>
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="nav-links" id="navLinks">
+            <a href="#">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-aos="fade-up" data-aos-duration="800">Empowering Global Communication & Talent Excellence</h1>
+            <p data-aos="fade-up" data-aos-delay="150" data-aos-duration="800">
+                In today’s interconnected world, businesses thrive on effective communication, specialized talent, and continuous learning.
+            </p>
+            <div data-aos="zoom-in" data-aos-delay="300" data-aos-duration="800">
+                <a href="#contact" class="btn-primary">
+                    Get Started <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="container">
+            <div class="about-card" data-aos="fade-up">
+                <div class="section-header" style="margin-bottom: 2rem;">
+                    <span class="section-tag">Who We Are</span>
+                    <h2 class="section-title">Bridging Skill Gaps, Enabling Collaboration</h2>
+                    <p class="section-subtitle">We empower enterprises through custom capability building, global talent acquisition, and end-to-end consulting solutions designed for international standards.</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <div>
+                            <strong>Domain Expertise</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Strong foundation in IT, linguistic services, and professional training.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-earth-americas"></i>
+                        <div>
+                            <strong>Global Outlook</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Tailored to multicultural environments and world-class benchmarks.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-sliders"></i>
+                        <div>
+                            <strong>Customization</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Flexible solutions built precisely around specific operational needs.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <div>
+                            <strong>Quality-Driven</strong>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Focus on precision, high consistency, and measurable outcomes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Capabilities</span>
+                <h2 class="section-title">Our Integrated Services</h2>
+                <p class="section-subtitle">Scalable solutions tailored to match dynamic market and operational demands.</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="card" data-aos="fade-up">
+                    <div class="icon-wrapper"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3>Specialized Staffing Solutions</h3>
+                    <ul>
+                        <li><strong>Contract Staffing:</strong> Agile deployment of skilled professionals for targeted timelines.</li>
+                        <li><strong>Permanent Placement:</strong> Recruitment of foreign language and domain experts.</li>
+                        <li><strong>Niche Talent Pool:</strong> Pre-screened candidates covering advanced IT & language proficiencies.</li>
+                    </ul>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-wrapper"><i class="fa-solid fa-language"></i></div>
+                    <h3>Foreign Language Translation</h3>
+                    <ul>
+                        <li>Technical blueprints & documentation.</li>
+                        <li>Standard Operating Procedures (SOPs).</li>
+                        <li>Functional cross-border business workflows.</li>
+                        <li>Contextual accuracy managed by veteran linguists.</li>
+                    </ul>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-wrapper"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3>Language Coaching</h3>
+                    <ul>
+                        <li><strong>IELTS Coaching:</strong> Tailored for academic pathways and global migrations.</li>
+                        <li><strong>DELF / DALF:</strong> Standardized French coaching aligned to official CEFR frameworks.</li>
+                        <li><strong>Institutional Programs:</strong> Corporate & university cohorts.</li>
+                    </ul>
+                </div>
+
+                <div class="card" data-aos="fade-up">
+                    <div class="icon-wrapper"><i class="fa-solid fa-brain"></i></div>
+                    <h3>Smart & Soft Skill Development</h3>
+                    <ul>
+                        <li>Prompt Engineering & Modern AI Interaction Skills.</li>
+                        <li>Foundational & Advanced Computing.</li>
+                        <li>Professional Communication & Workplace Dynamics.</li>
+                        <li>Digital Productivity & Analytical Thought frameworks.</li>
+                    </ul>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-wrapper"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3>E-Learning & IT Knowledge</h3>
+                    <ul>
+                        <li>Curated technical write-ups and module building.</li>
+                        <li>Industry-aligned technical skill progression.</li>
+                        <li>Self-paced e-learning paths and knowledge engines.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Direct Lines</span>
+                <h2 class="section-title">Get in Touch</h2>
+                <p class="section-subtitle">Reach out directly to our dedicated departments for swift assistance.</p>
+            </div>
+
+            <div class="contacts-grid" data-aos="fade-up">
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fa-solid fa-user-tie"></i></div>
+                    <div class="contact-info">
+                        <h4>Job Search</h4>
+                        <a href="mailto:careers@wisdomq.in">careers@wisdomq.in</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fa-solid fa-handshake"></i></div>
+                    <div class="contact-info">
+                        <h4>Hiring</h4>
+                        <a href="mailto:recruitment@wisdomq.in">recruitment@wisdomq.in</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fa-solid fa-id-badge"></i></div>
+                    <div class="contact-info">
+                        <h4>Human Resources</h4>
+                        <a href="mailto:hr@wisdomq.in">hr@wisdomq.in</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="contact-info">
+                        <h4>Sales</h4>
+                        <a href="mailto:sales@wisdomq.in">sales@wisdomq.in</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <div class="contact-info">
+                        <h4>Business Enquiries</h4>
+                        <a href="mailto:accounts@wisdomq.in">accounts@wisdomq.in</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fa-solid fa-headset"></i></div>
+                    <div class="contact-info">
+                        <h4>Technical Support</h4>
+                        <a href="mailto:support@wisdomq.in">support@wisdomq.in</a>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                    <div class="contact-info">
+                        <h4>General Queries</h4>
+                        <a href="mailto:info@wisdomq.in">info@wisdomq.in</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phone-container" data-aos="fade-up" data-aos-delay="100">
+                <a href="tel:080123456789" class="phone-chip">
+                    <i class="fa-solid fa-phone" style="color: var(--primary);"></i>
+                    <span><strong>Bangalore:</strong> 080-1234567890</span>
+                </a>
+                <a href="tel:044123456789" class="phone-chip">
+                    <i class="fa-solid fa-phone" style="color: var(--primary);"></i>
+                    <span><strong>Chennai:</strong> 044-1234567890</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 WisdomQ Technologies. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 900, once: true, offset: 50 });
+
+        // Lazy-load background video
+        const video = document.getElementById('bgVideo');
+        const source = video.querySelector('source');
+        const loadVideo = () => {
+            if (!source.src && source.dataset.src) {
+                source.src = source.dataset.src;
+                video.load();
+                video.play().catch(() => {});
+            }
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadVideo();
+                    observer.disconnect();
+                }
+            });
+        });
+        observer.observe(video);
+
+        // Navbar blur on scroll
+        window.addEventListener('scroll', () => {
+            document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Responsive Mobile Navigation Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            if (navLinks.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            } else {
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu on clicking any link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+</html>
